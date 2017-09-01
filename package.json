@@ -1,0 +1,24 @@
+{
+  "name": "pbplus-member-sdk",
+  "version": "0.0.1",
+  "description": "API sdk of PBPlus member plugin.",
+  "main": "dist/js/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill42362/pbplus-member-sdk.git"
+  },
+  "keywords": [
+    "pbplus",
+    "redux",
+    "member"
+  ],
+  "author": "Pi-Yin Hsiao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bill42362/pbplus-member-sdk/issues"
+  },
+  "homepage": "https://github.com/bill42362/pbplus-member-sdk#readme"
+}
