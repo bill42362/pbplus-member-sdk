@@ -2,8 +2,11 @@
   "name": "pbplus-member-sdk",
   "version": "0.0.1",
   "description": "API sdk of PBPlus member plugin.",
-  "main": "dist/js/index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && NODE_ENV=production webpack -p --progress",
+    "prepublish": "npm run build",
     "test": "jest"
   },
   "repository": {
@@ -20,5 +23,15 @@
   "bugs": {
     "url": "https://github.com/bill42362/pbplus-member-sdk/issues"
   },
-  "homepage": "https://github.com/bill42362/pbplus-member-sdk#readme"
+  "homepage": "https://github.com/bill42362/pbplus-member-sdk#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "react": "^15.6.1",
+    "rimraf": "^2.6.1",
+    "webpack": "^3.5.5"
+  }
 }
