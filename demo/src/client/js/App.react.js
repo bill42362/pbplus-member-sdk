@@ -1,8 +1,8 @@
 // App.react.js
 import { connect } from 'react-redux';
 import React from 'react';
-// import { PbplusMemberCenter } from 'pbplus-member-sdk';
-import { PbplusMemberCenter } from '../../../../src/index.js';
+// import PbplusMemberCenter from 'pbplus-member-sdk';
+import PbplusMemberCenter from '../../../../src/index.js';
 import '../css/app.less';
 
 class App extends React.Component {
