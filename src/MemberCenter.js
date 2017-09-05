@@ -2,11 +2,13 @@
 'use strict';
 import { combineReducers } from 'redux';
 import DisplayState from './DisplayState.js';
+import Calendar from './Calendar.js';
 
 const defaultState = {displayState: 'display'};
 
 const Reducer = combineReducers({
     displayState: DisplayState.Reducer,
+    calendar: Calendar.Reducer,
 });
 
 const display = () => { return (dispatch, getState) => {

@@ -19,6 +19,7 @@ class App extends React.Component {
             <div className='open-member-center-button' role='button' onClick={this.showMemberCenter}>
                 使用者中心
             </div>
+            <PbplusMemberCenter.Container />
         </div>;
     }
 }

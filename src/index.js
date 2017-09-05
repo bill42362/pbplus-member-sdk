@@ -1,5 +1,6 @@
 // index.js
 import MemberCenter from './MemberCenter.js';
+import MemberCenterContainer from './MemberCenterContainer.js';
 
 const Actions = {
     display: MemberCenter.Actions.display,
@@ -7,5 +8,6 @@ const Actions = {
 
 export default {
     Reducer: MemberCenter.Reducer,
+    Container: MemberCenterContainer,
     Actions
 };
