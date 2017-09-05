@@ -1,0 +1,44 @@
+{
+  "name": "pbplus-member-ui-demo",
+  "version": "1.0.0",
+  "description": "Demo project of SDK of PBPlus member plugin.",
+  "main": "dist/server/index.js",
+  "scripts": {
+    "buildserver": "rimraf dist/server && cross-env NODE_ENV=production babel src/server -d dist/server --ignore .test.js",
+    "build": "rimraf dist/client && cross-env NODE_ENV=production webpack -p --progress",
+    "wds": "webpack-dev-server --progress",
+    "devserver": "nodemon --ignore dist --ignore src/client --exec babel-node src/server/index.js",
+    "start": "npm run build && npm run buildserver && cross-env NODE_ENV=production node dist/server/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "pbplus",
+    "demo",
+    "react"
+  ],
+  "author": "Pi-Yin Hsiao",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.5",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "cross-env": "^5.0.5",
+    "express": "^4.15.4",
+    "nodemon": "^1.11.0"
+  }
+}
