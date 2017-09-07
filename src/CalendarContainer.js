@@ -5,9 +5,18 @@ import Calendar from './Calendar.js';
 import { PbplusCalendar } from 'pbplus-member-ui';
 
 const CalendarContainer = connect(
-    (state, ownProps) => { return Object.assign({}, state.pbplusMemberCenter.calendar); },
+    (state, ownProps) => {
+        const { calendar } = state.pbplusMemberCenter;
+        const eventsWithDate = calendar.events
+        .map(event => Object.assign({}, event, {date: new Date(event.event_start_date)}));
+        const promotionsWithDate = calendar.promotions
+        .map(promotion => Object.assign({}, promotion, {date: new Date(promotion.event_start_date)}));
+        return Object.assign({}, calendar, {events: eventsWithDate, promotions: promotionsWithDate});
+    },
     (dispatch, ownProps) => {
         return {
+            fetchCommingEvents: () => { dispatch(Calendar.Actions.fetchCommingEvents()); },
+            selectDate: ({ date }) => { dispatch(Calendar.Actions.updateSelectedDate({ date})); },
             goThisMonth: () => {
                 const today = new Date();
                 dispatch(Calendar.Actions.updateMonth({month: today.getMonth(), year: today.getFullYear()}));

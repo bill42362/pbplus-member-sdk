@@ -2,6 +2,7 @@
 'use strict';
 import { combineReducers } from 'redux';
 import DisplayState from './DisplayState.js';
+import UserUUID from './UserUUID.js';
 import Calendar from './Calendar.js';
 import PersonalData from './PersonalData.js';
 import PictureEditor from './PictureEditor.js';
@@ -9,6 +10,7 @@ import PictureEditor from './PictureEditor.js';
 const defaultState = {displayState: 'display'};
 
 const Reducer = combineReducers({
+    userUuid: UserUUID.Reducer,
     displayState: DisplayState.Reducer,
     calendar: Calendar.Reducer,
     personalData: PersonalData.Reducer,
