@@ -80,3 +80,11 @@ export const makeSearchString = (search) => {
     if(0 === searchKeys.length) { return ''; }
     return searchKeys.map(key => `${key}=${search[key]}`).join('&');
 }
+
+export const trimObject = object => {
+    const result = {};
+    Object.keys(object).forEach(objectKey => {
+        if(object[objectKey]) { result[objectKey] = object[objectKey]; }
+    });
+    return result;
+};

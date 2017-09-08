@@ -18,19 +18,19 @@ const PersonalDataContainer = connect(
             dispatch(PersonalData.Actions.updateValue({ newValueMap }));
         },
         updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
+        fetchPersonalData: () => { dispatch(PersonalData.Actions.fetchData()); },
         submit: ({
             photo, name, gender,
             birthYear, birthMonth, birthDay,
             country, mobile, mobileVerifyCode,
             email, zipcode, address
         }) => {
-            console.log(
-                'submit()',
+            dispatch(PersonalData.Actions.submit({
                 photo, name, gender,
                 birthYear, birthMonth, birthDay,
                 country, mobile, mobileVerifyCode,
                 email, zipcode, address
-            );
+            }));
         },
     }; }
 )(PbplusPersonalData);

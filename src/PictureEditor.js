@@ -24,7 +24,7 @@ const Reducer = (state = defaultState, action) => {
 
 const updateImageSource = (source) => { return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-        const { image } = getState().pbplusPictureEditor;
+        const { image } = getState().pbplusMemberCenter.pictureEditor;
         image.onload = () => {
             const { width, height } = image;
             const targetZoom = DEFAULT_SIZE/Math.min(width, height);
@@ -42,21 +42,21 @@ const updateImageSource = (source) => { return (dispatch, getState) => {
     });
 }};
 const movePicture = ({x, y}) => { return (dispatch, getState) => {
-    const state = getState().pbplusPictureEditor;
+    const state = getState().pbplusMemberCenter.pictureEditor;
     const top = state.top + y;
     const left = state.left + x;
     dispatch({type: 'UPDATE_POSITION', position: { top, left }});
     return dispatch(updateResultSource());
 }};
 const stretchPicture = ({x, y}) => { return (dispatch, getState) => {
-    const state = getState().pbplusPictureEditor;
+    const state = getState().pbplusMemberCenter.pictureEditor;
     const width = state.width + x;
     const height = state.height + y;
     dispatch({type: 'UPDATE_SIZE', size: { width, height }});
     return dispatch(updateResultSource());
 }};
 const updateResultSource = () => { return (dispatch, getState) => {
-    const state = getState().pbplusPictureEditor;
+    const state = getState().pbplusMemberCenter.pictureEditor;
     return new Promise((resolve, reject) => {
         const outputSize = {width: DEFAULT_SIZE, height: DEFAULT_SIZE};
         const canvas = document.createElement('canvas');
