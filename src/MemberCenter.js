@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import DisplayState from './DisplayState.js';
 import UserUUID from './UserUUID.js';
 import Calendar from './Calendar.js';
+import PointCounter from './PointCounter.js';
 import PersonalData from './PersonalData.js';
 import PictureEditor from './PictureEditor.js';
 
@@ -13,6 +14,7 @@ const Reducer = combineReducers({
     userUuid: UserUUID.Reducer,
     displayState: DisplayState.Reducer,
     calendar: Calendar.Reducer,
+    pointCounter: PointCounter.Reducer,
     personalData: PersonalData.Reducer,
     pictureEditor: PictureEditor.Reducer,
 });
