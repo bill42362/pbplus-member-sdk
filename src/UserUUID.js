@@ -2,13 +2,13 @@
 'use strict';
 import { getUrlSearches, makeSearchString, newUuid, saveCookieByName, getCookieByName } from './Utils.js';
 
-const COOKIE_NAME = 'tokenId';
+const COOKIE_NAME = 'token_id';
 
 const searches = getUrlSearches()
 const uuidFromSearch = searches[COOKIE_NAME];
 delete searches[COOKIE_NAME];
 const newSearchString = makeSearchString(searches);
-//window.history.replaceState('', '', `${location.pathname}${newSearchString ? '?' : ''}${newSearchString}`);
+window.history.replaceState('', '', `${location.pathname}${newSearchString ? '?' : ''}${newSearchString}`);
 
 const uuidFromCookie = getCookieByName({name: COOKIE_NAME});
 const defaultState = uuidFromSearch || uuidFromCookie || newUuid();
@@ -38,6 +38,10 @@ const updateUserUUID = ({ uuid }) => {
     return {type: 'UPDATE_PBPLUS_USER_UUID', payload: { uuid }};
 };
 
-const Actions = { updateUserUUID };
+const renewUserUUID = () => {
+    return updateUserUUID({uuid: newUuid()});
+};
+
+const Actions = { updateUserUUID, renewUserUUID };
 
 export default { Reducer, Actions };

@@ -1,7 +1,7 @@
 // DisplayState.js
 'use strict';
 
-const defaultState = 'display';
+const defaultState = 'hidden';
 
 const Reducer = (state = defaultState, action) => {
     switch(action.type) {

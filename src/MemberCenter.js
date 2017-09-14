@@ -8,8 +8,6 @@ import PointCounter from './PointCounter.js';
 import PersonalData from './PersonalData.js';
 import PictureEditor from './PictureEditor.js';
 
-const defaultState = {displayState: 'display'};
-
 const Reducer = combineReducers({
     userUuid: UserUUID.Reducer,
     displayState: DisplayState.Reducer,

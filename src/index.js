@@ -6,6 +6,7 @@ import MemberCenterContainer from './MemberCenterContainer.js';
 const Actions = {
     display: MemberCenter.Actions.display,
     updateUserUUID: UserUUID.Actions.updateUserUUID,
+    renewUserUUID: UserUUID.Actions.renewUserUUID,
 };
 
 export default {
