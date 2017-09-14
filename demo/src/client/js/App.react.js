@@ -9,16 +9,28 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.showMemberCenter = this.showMemberCenter.bind(this);
+        this.logout = this.logout.bind(this);
     }
     showMemberCenter() {
         const { showMemberCenter } = this.props;
         if(showMemberCenter) { showMemberCenter(); }
     }
+    logout() {
+        const { logout } = this.props;
+        if(logout) { logout(); }
+    }
     render() {
+        const { isUserLoggedIn, loginEndpoint } = this.props;
         return <div className='app'>
-            <div className='open-member-center-button' role='button' onClick={this.showMemberCenter}>
+            {!isUserLoggedIn && <a className='login-pbplus-button' role='button' href={loginEndpoint}>
+                登入 pb+
+            </a>}
+            {isUserLoggedIn && <div className='open-member-center-button' role='button' onClick={this.showMemberCenter}>
                 使用者中心
-            </div>
+            </div>}
+            {isUserLoggedIn && <div className='logout-pbplus-button' role='button' onClick={this.logout}>
+                登出 pb+
+            </div>}
             <PbplusMemberCenter.Container />
         </div>;
     }
