@@ -7,8 +7,8 @@ import { connect, Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AuthState from './AuthState.js';
-import PbplusMemberCenter from 'pbplus-member-sdk';
-//import PbplusMemberCenter from '../../../../src/index.js';
+//import PbplusMemberCenter from 'pbplus-member-sdk';
+import PbplusMemberCenter from '../../../../src/index.js';
 import App from './App.react.js';
 import '../css/index.less';
 
