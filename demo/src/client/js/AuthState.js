@@ -1,7 +1,7 @@
 // AuthState.js
 'use strict';
 
-const defaultState = {};
+const defaultState = {isUserLoggedIn: false, endpoint: 'http://localhost:3000'};
 
 const Reducer = (state = defaultState, action) => {
     switch(action.type) {

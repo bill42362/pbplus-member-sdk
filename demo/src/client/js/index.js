@@ -8,6 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AuthState from './AuthState.js';
 import PbplusMemberCenter from 'pbplus-member-sdk';
+//import PbplusMemberCenter from '../../../../src/index.js';
 import App from './App.react.js';
 import '../css/index.less';
 
@@ -31,8 +32,10 @@ const refreshAuthState = () => {
         return response.json();
     })
     .then(response => {
-        if(200 !== response.status) { throw new Error('Bad response from server'); }
-        store.dispatch(AuthState.Actions.updateAuthState({authState: response.message}));
+        store.dispatch(AuthState.Actions.updateAuthState({authState: {
+            isUserLoggedIn: 200 === response.status,
+            endpoint: response.message.endpoint,
+        }}));
     })
     .catch(error => console.log);
 };
@@ -40,11 +43,11 @@ refreshAuthState();
 
 const ConnectedApp = connect(
     (state, ownProps) => {
-        const { endpoint } = state.pbplusAuthState;
+        const { endpoint, isUserLoggedIn } = state.pbplusAuthState;
         const { userUuid: uuid } = state.pbplusMemberCenter;
         return {
-            isUserLoggedIn: !!state.pbplusAuthState.token,
             loginEndpoint: `${endpoint}&token_id=${uuid}&ref=${btoa(location.pathname.slice(1))}`,
+            isUserLoggedIn
         };
     },
     (dispatch, ownProps) => { return {
