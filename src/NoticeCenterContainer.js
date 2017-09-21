@@ -14,7 +14,7 @@ const NoticeCenterContainer = connect(
     (dispatch, ownProps) => { return {
         expendNotice: ({ noticeId }) => { dispatch(NoticeCenter.Actions.updateExpendedNotice({id: noticeId})); },
         clearExpendNotice: () => { dispatch(NoticeCenter.Actions.updateExpendedNotice({id: '-1'})); },
-        fetchNotices: () => { console.log('fetchNotices()'); },
+        fetchNotices: () => { dispatch(NoticeCenter.Actions.fetchNotices()); },
     }; }
 )(PbplusNoticeCenter);
 
