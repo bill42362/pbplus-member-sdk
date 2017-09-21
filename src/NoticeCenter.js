@@ -10,20 +10,45 @@ const defaultState = {
 
 const Reducer = (state = defaultState, action) => {
     switch(action.type) {
-        case 'UPDATE_PBPLUS_ECPENDED_NOTICE':
+        case 'UPDATE_PBPLUS_EXPENDED_NOTICE':
             return Object.assign({}, state, {expendedNoticeId: action.payload.id});
             break;
         case 'UPDATE_PBPLUS_NOTICES':
             return Object.assign({}, state, action.payload);
+            break;
+        case 'UPDATE_PBPLUS_NOTICE':
+            return Object.assign({}, state, {notices: state.notices.map(notice => {
+                if(action.payload.notice.id === notice.id) {
+                    return action.payload.notice;
+                } else {
+                    return notice;
+                }
+            })});
             break;
         default:
             return state;
     }
 }
 
-const updateExpendedNotice = ({ id }) => {
-    return {type: 'UPDATE_PBPLUS_ECPENDED_NOTICE', payload: { id }};
-};
+const updateNotice = ({ notice }) => { return (dispatch, getState) => {
+    return dispatch({type: 'UPDATE_PBPLUS_NOTICE', payload: { notice }});
+}; };
+
+const updateExpendedNotice = ({ id }) => { return (dispatch, getState) => {
+    const notice = getState().pbplusMemberCenter
+        .noticeCenter.notices
+        .filter(notice => `${id}` === `${notice.id}`)[0];
+    if(notice && notice.isNew) {
+        const { userUuid: uuid } = getState().pbplusMemberCenter;
+        dispatch(updateNotice({notice: Object.assign({}, notice, {isNew: false})}));
+        fetch(`${NOTICE_BASE_URL}/open`, {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({notifications_id: id, uuid })
+        });
+    }
+    return dispatch({type: 'UPDATE_PBPLUS_EXPENDED_NOTICE', payload: { id }});
+}; };
 
 const updateNotices = ({ notices }) => {
     return {type: 'UPDATE_PBPLUS_NOTICES', payload: { notices }};
@@ -31,7 +56,7 @@ const updateNotices = ({ notices }) => {
 
 const fetchNotices = () => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
-    fetch(`${NOTICE_BASE_URL}`, {
+    return fetch(`${NOTICE_BASE_URL}`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ uuid })
@@ -48,7 +73,7 @@ const fetchNotices = () => { return (dispatch, getState) => {
             title: notice.title,
             content: notice.message,
             link: notice.link,
-            date: notice.date ? new Date(notice.date) : new Date(),
+            date: new Date(notice.date),
         }));
         dispatch(updateNotices({ notices }));
     })
