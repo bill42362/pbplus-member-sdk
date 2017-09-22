@@ -10,7 +10,8 @@ import { PbplusMemberCenter } from 'pbplus-member-ui';
 
 const MemberCenterContainer = connect(
     (state, ownProps) => { return {
-        displayState: state.pbplusMemberCenter.displayState,
+        displayState: state.pbplusMemberCenter.displayState.phase,
+        activeTab: state.pbplusMemberCenter.displayState.activeTab,
         calendar: <CalendarContainer />,
         pointCounter: <PointCounterContainer />,
         personalData: <PersonalDataContainer />,
@@ -18,6 +19,7 @@ const MemberCenterContainer = connect(
     }; },
     (dispatch, ownProps) => { return {
         hide: () => { dispatch(MemberCenter.Actions.hide()); },
+        setActiveTab: ({ key }) => { dispatch(MemberCenter.Actions.updateActiveTab({activeTab: key})); },
     }; }
 )(PbplusMemberCenter);
 
