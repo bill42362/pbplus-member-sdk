@@ -28,6 +28,10 @@ const hide = () => { return (dispatch, getState) => {
     setTimeout(() => dispatch(DisplayState.Actions.updateDisplayState({displayState: 'hidden'})), 600);
 }; };
 
-const Actions = { display, hide };
+const updateActiveTab = ({ activeTab }) => { return (dispatch, getState) => {
+    dispatch(DisplayState.Actions.updateActiveTab({ activeTab }));
+}; };
+
+const Actions = { display, hide, updateActiveTab };
 
 export default { Reducer, Actions };
