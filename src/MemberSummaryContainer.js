@@ -6,7 +6,7 @@ import { PbplusMemberSummary } from 'pbplus-member-ui';
 
 const MemberSummaryContainer = connect(
     (state, ownProps) => {
-        return state.pbplusMemberCenter.memberSummary;
+        return Object.assign({}, state.pbplusMemberCenter.memberSummary, {random: Math.random()});
     },
     (dispatch, ownProps) => { return {
         fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary()); },
