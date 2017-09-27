@@ -1,11 +1,11 @@
 // MemberSummary.js
 'use strict';
 import 'isomorphic-fetch';
+import PointCounter from './PointCounter.js';
+import PersonalData from './PersonalData.js';
 import { NOTICE_BASE_URL } from './BaseUrl.js';
 
 const defaultState = {
-    userPhoto: 'https://p2.bahamut.com.tw/HOME/creationCover/40/0003703340.JPG',
-    nickname: 'Sbi 蕭阿寶',
     registeredDate: new Date(),
     coins: 50,
     eventCounts: [
@@ -19,8 +19,6 @@ const defaultState = {
         {key: 'achievement-2', display: 'achi-2', imageSrc: 'https://p2.bahamut.com.tw/HOME/creationCover/40/0003703340.JPG'},
         {key: 'achievement-3', display: 'achi-3', imageSrc: 'https://p2.bahamut.com.tw/HOME/creationCover/40/0003703340.JPG'},
     ],
-    points: 1000,
-    pointsLastRenewDate: new Date(),
 };
 
 const Reducer = (state = defaultState, action) => {
@@ -37,10 +35,11 @@ const updateMemberSummary = ({ summary }) => { return (dispatch, getState) => {
     return dispatch({type: 'UPDATE_PBPLUS_MEMBER_SUMMARY', payload: { summary }});
 }; };
 
-const fetchMemberSummary = () => {
-    console.log('fetchMemberSummary()');
+const fetchMemberSummary = () => { return (dispatch, getState) => {
+    dispatch(PointCounter.Actions.fetchPoints());
+    dispatch(PersonalData.Actions.fetchData());
     return {type: 'NULL', payload: {}};
-};
+}; };
 
 const Actions = { updateMemberSummary, fetchMemberSummary };
 
