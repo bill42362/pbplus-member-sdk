@@ -6,7 +6,19 @@ import { PbplusMemberSummary } from 'pbplus-member-ui';
 
 const MemberSummaryContainer = connect(
     (state, ownProps) => {
-        return state.pbplusMemberCenter.memberSummary;
+        return Object.assign(
+            {},
+            state.pbplusMemberCenter.memberSummary,
+            {
+                userPhoto: state.pbplusMemberCenter.pictureEditor.image.src,
+                nickname: state.pbplusMemberCenter.personalData.nickname,
+            },
+            {
+                points: state.pbplusMemberCenter.pointCounter.points,
+                pointsLastRenewDate: state.pbplusMemberCenter.pointCounter.pointsLastRenewDate,
+            },
+            {random: Math.random()}
+        );
     },
     (dispatch, ownProps) => { return {
         fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary()); },

@@ -6,7 +6,7 @@ import PictureEditor from './PictureEditor.js';
 import { trimObject } from './Utils.js';
 
 const defaultState = {
-    name: '', gender: '',
+    name: '', nickname: '', gender: '',
     birthYear: '', birthMonth: '', birthDay: '',
     country: '', mobile: '',
     mobileVerifyCode: '',
@@ -42,13 +42,13 @@ const fetchData = () => { return (dispatch, getState) => {
     .then(response => {
         const {
             src,
-            name, gender,
+            name, nickname, gender,
             birth_year: birthYear, birth_month: birthMonth, birth_day: birthDay,
             country, mobile, email,
             zipcode, address
         } = response.message;
         const newValueMap = trimObject({
-            name, gender,
+            name, nickname, gender,
             birthYear, birthMonth, birthDay,
             country, mobile, email,
             zipcode, address

@@ -5,6 +5,7 @@ import { POINTS_BASE_URL } from './BaseUrl.js';
 
 const defaultState = {
     points: 0,
+    pointsLastRenewDate: new Date(),
     rewards: [],
 };
 const getRewardTemplate = () => ({
@@ -31,15 +32,15 @@ const Reducer = (state = defaultState, action) => {
             });
             break;
         case 'UPDATE_PBPLUS_POINT_COUNT':
-            return Object.assign({}, state, {points: action.payload.points});
+            return Object.assign({}, state, action.payload);
             break;
         default:
             return state;
     }
 }
 
-const updatePointCount = ({ points }) => {
-    return {type: 'UPDATE_PBPLUS_POINT_COUNT', payload: { points }};
+const updatePointCount = ({ points, pointsLastRenewDate }) => {
+    return {type: 'UPDATE_PBPLUS_POINT_COUNT', payload: { points, pointsLastRenewDate }};
 };
 
 const updateRewardList = ({ rewards }) => {
@@ -64,7 +65,13 @@ const fetchPoints = () => { return (dispatch, getState) => {
         return response.json();
     })
     .then(response => {
-        if(200 === response.status) { dispatch(updatePointCount({points: response.message})); }
+        if(200 === response.status) {
+            const { points, pointsLastRenewDate: pointsLastRenewDateString } = response.message;
+            dispatch(updatePointCount({
+                pointsLastRenewDate: pointsLastRenewDateString ? new Date(pointsLastRenewDateString) : new Date(),
+                points,
+            }));
+        }
         else { throw new Error('Bad response from server'); }
     })
     .catch(error => { console.log(error); });
