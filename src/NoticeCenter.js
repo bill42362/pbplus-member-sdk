@@ -66,15 +66,20 @@ const fetchNotices = () => { return (dispatch, getState) => {
         return response.json();
     })
     .then(response => {
-        const notices = response.message.map(notice => ({
-            id: notice.id,
-            isNew: !!notice.status,
-            isImportant: '1' === notice.flag,
-            title: notice.title,
-            content: notice.message,
-            link: notice.link,
-            date: new Date(notice.date),
-        }));
+        const notices = response.message.map(notice => {
+            const links = JSON.parse(notice.link);
+            const linkTexts = JSON.parse(notice.link_text);
+            return {
+                id: notice.id,
+                isNew: !!notice.status,
+                isImportant: '1' === notice.flag,
+                title: notice.title,
+                content: notice.message,
+                link: notice.link,
+                links: links.map((link, index) => ({text: linkTexts[index] || link, href: link})),
+                date: new Date(notice.date),
+            };
+        });
         dispatch(updateNotices({ notices }));
     })
     .catch(error => { console.log(error); });
