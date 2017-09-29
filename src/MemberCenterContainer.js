@@ -13,7 +13,7 @@ const MemberCenterContainer = connect(
     (state, ownProps) => { return {
         displayState: state.pbplusMemberCenter.displayState.phase,
         activeTab: state.pbplusMemberCenter.displayState.activeTab,
-        memberSummary: <MemberSummaryContainer />,
+        //memberSummary: <MemberSummaryContainer />,
         calendar: <CalendarContainer />,
         pointCounter: <PointCounterContainer />,
         personalData: <PersonalDataContainer />,

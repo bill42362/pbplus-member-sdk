@@ -12,6 +12,7 @@ const defaultState = {
     mobileVerifyCode: '',
     email: '',
     zipcode: '', address: '',
+    submitResult: {isSuccess: undefined, message: ''},
 };
 
 const Reducer = (state = defaultState, action) => {
@@ -83,9 +84,24 @@ const submit = ({
         return response.json();
     })
     .then(response => {
-        console.log('response:', response);
+        if(200 === response.status) {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: true, message: '更新成功。'}}}));
+            setTimeout(() => {
+                dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+            }, 6000);
+        } else {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '更新失敗。'}}}));
+            setTimeout(() => {
+                dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+            }, 6000);
+        }
     })
-    .catch(error => { console.log(error); });
+    .catch(error => {
+        dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '更新失敗。'}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    });
 }; };
 
 const Actions = { updateValue, fetchData, submit };
