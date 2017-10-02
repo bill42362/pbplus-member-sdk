@@ -50,7 +50,7 @@ const fetchCommingEvents = () => { return (dispatch, getState) => {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ uuid })
-        })
+        });
     })
     .then(response => {
         if(response.status >= 400) { throw new Error('Bad response from server'); }
@@ -60,7 +60,6 @@ const fetchCommingEvents = () => { return (dispatch, getState) => {
         if(response.status >= 400) { throw new Error('Empty response from server'); }
         const participatedEvents = response.message.map(event => {
             return Object.assign({}, event, {
-                banner: event.banner ? `https://event.pbplus.me/${event.banner}` : undefined,
                 link: `https://event.pbplus.me/event/${event.event_id}/info`,
                 isParticipated: true,
             });
