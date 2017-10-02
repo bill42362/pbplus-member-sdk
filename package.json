@@ -33,7 +33,7 @@
     "crypto-browserify": "^3.11.1",
     "isomorphic-fetch": "^2.2.1",
     "mersenne-twister": "^1.1.0",
-    "pbplus-member-ui": "^2.11.0",
+    "pbplus-member-ui": "^2.11.1",
     "react": "^15.6.2",
     "redux": "^3.7.2",
     "rimraf": "^2.6.2",
