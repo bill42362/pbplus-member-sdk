@@ -103,7 +103,6 @@ const fetchRewardList = () => { return (dispatch, getState) => {
 const submit = ({ orders }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putDataTemplate = { uuid };
-    orders.forEach(order => dispatch(updateRewardSelectCount({id: order.id, count: 0})));
     return Promise.all(orders.map(order => {
         const putData = Object.assign({}, putDataTemplate, {
             item_id: order.id, amount: order.selectedCount
@@ -120,9 +119,14 @@ const submit = ({ orders }) => { return (dispatch, getState) => {
         return Promise.all(responses.map(response => response.json()));
     })
     .then(responses => {
+        alert('折扣碼將在十天內出現在您個人的通知中心，謝謝您');
+        orders.forEach(order => dispatch(updateRewardSelectCount({id: order.id, count: 0})));
         return dispatch(fetchPoints());
     })
-    .catch(error => { console.log(error); });
+    .catch(error => { alert(
+        '您的兌換過程出了一些問題，請與客服中心聯絡，並提供您的姓名及電話，我們會用最快的速度回覆你喔! '
+        + '造成您的不便，敬請見諒'
+    ); });
 }; };
 
 const Actions = { updatePointCount, fetchRewardList, updateRewardSelectCount, submit, fetchPoints };
