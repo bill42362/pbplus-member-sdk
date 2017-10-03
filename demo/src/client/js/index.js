@@ -19,11 +19,13 @@ const reducer = combineReducers({
 const store = createStore(reducer, applyMiddleware(ReduxThunk));
 
 const refreshAuthState = () => {
-    return fetch('http://dev-server-elb-1887534414.ap-northeast-1.elb.amazonaws.com:8096/account/api/auth_state', {
+    //return fetch('https://dev-server-elb-1887534414.ap-northeast-1.elb.amazonaws.com:8096/account/api/auth_state', {
+    return fetch('https://authapi.pbplus.me/account/api/auth_state', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            client_id: 'B1B4A63EEEAF11E6888B0A28175C2AF1',
+            client_id: '8486C5FA991611E790810ACA2C7BEF8A',
+            //client_id: 'B1B4A63EEEAF11E6888B0A28175C2AF1',
             uuid: store.getState().pbplusMemberCenter.userUuid
         })
     })
