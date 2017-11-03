@@ -13,5 +13,6 @@ const Actions = {
 export default {
     Reducer: MemberCenter.Reducer,
     Container: MemberCenterContainer,
-    Actions
+    Actions,
+    UserUUID
 };
