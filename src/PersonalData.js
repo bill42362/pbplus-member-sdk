@@ -61,7 +61,7 @@ const fetchData = () => { return (dispatch, getState) => {
 }; };
 
 const submit = ({
-    photo, name, gender,
+    photo, nickname, name, gender,
     birthYear, birthMonth, birthDay,
     country, mobile, mobileVerifyCode,
     email, zipcode, address
@@ -70,7 +70,7 @@ const submit = ({
     const putData = Object.assign({ uuid }, {
         birthday: `${birthYear}-${birthMonth}-${birthDay}`,
         picture: photo,
-        name, gender,
+        nickname, name, gender,
         country, mobile, mobileVerifyCode,
         email, zipcode, address
     });

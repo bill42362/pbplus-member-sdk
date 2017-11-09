@@ -20,13 +20,13 @@ const PersonalDataContainer = connect(
         updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
         fetchPersonalData: () => { dispatch(PersonalData.Actions.fetchData()); },
         submit: ({
-            photo, name, gender,
+            photo, nickname, name, gender,
             birthYear, birthMonth, birthDay,
             country, mobile, mobileVerifyCode,
             email, zipcode, address
         }) => {
             dispatch(PersonalData.Actions.submit({
-                photo, name, gender,
+                photo, nickname, name, gender,
                 birthYear, birthMonth, birthDay,
                 country, mobile, mobileVerifyCode,
                 email, zipcode, address
