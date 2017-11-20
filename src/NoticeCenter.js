@@ -66,7 +66,7 @@ const fetchNotices = () => { return (dispatch, getState) => {
         return response.json();
     })
     .then(response => {
-        if(!response.message) { return; }
+        if(200 !== response.status || null === response.message) { return; }
         const notices = response.message.map(notice => {
             const links = JSON.parse(notice.link);
             const linkTexts = JSON.parse(notice.link_text);
