@@ -1,6 +1,6 @@
 {
   "name": "pbplus-member-sdk",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "API sdk of PBPlus member plugin.",
   "main": "dist/index.js",
   "scripts": {
