@@ -1,7 +1,7 @@
 // PersonalData.js
 'use strict';
 import 'isomorphic-fetch';
-import { PERSONAL_DATA_BASE_URL } from './BaseUrl.js';
+import { PERSONAL_DATA_BASE_URL, FILL_EMAIL_BASE_URL } from './BaseUrl.js';
 import PictureEditor from './PictureEditor.js';
 import { trimObject } from './Utils.js';
 
@@ -10,7 +10,7 @@ const defaultState = {
     birthYear: '', birthMonth: '', birthDay: '',
     country: '', mobile: '',
     mobileVerifyCode: '',
-    email: '',
+    email: '', isEmailValidated: false,
     zipcode: '', address: '',
     submitResult: {isSuccess: undefined, message: ''},
 };
@@ -52,12 +52,40 @@ const fetchData = () => { return (dispatch, getState) => {
             name, nickname, gender,
             birthYear, birthMonth, birthDay,
             country, mobile, email,
-            zipcode, address
+            zipcode, address,
+            isEmailValidated: !!email,
         });
         dispatch(updateValue({ newValueMap }));
         if(src) { dispatch(PictureEditor.Actions.updateImageSource(src)); }
     })
     .catch(error => { console.log(error); });
+}; };
+
+const validateEmail = ({ email }) => { return (dispatch, getState) => {
+    const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const putData = { uuid, email };
+    fetch(FILL_EMAIL_BASE_URL, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(putData)
+    })
+    .then(response => {
+        if(response.status >= 400) { throw new Error('Bad response from server'); }
+        return response.json();
+    })
+    .then(response => {
+        const isSuccess = 200 === response.status;
+        dispatch(updateValue({newValueMap: {submitResult: { isSuccess, message: response.message}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    })
+    .catch(error => {
+        dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '內部錯誤，請稍後再試。'}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    });
 }; };
 
 const submit = ({
@@ -104,6 +132,6 @@ const submit = ({
     });
 }; };
 
-const Actions = { updateValue, fetchData, submit };
+const Actions = { updateValue, fetchData, submit, validateEmail };
 
 export default { Reducer, Actions };

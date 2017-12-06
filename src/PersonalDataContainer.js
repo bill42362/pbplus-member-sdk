@@ -19,6 +19,7 @@ const PersonalDataContainer = connect(
         },
         updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
         fetchPersonalData: () => { dispatch(PersonalData.Actions.fetchData()); },
+        validateEmail: ({ email }) => { dispatch(PersonalData.Actions.validateEmail({ email })); },
         submit: ({
             photo, nickname, name, gender,
             birthYear, birthMonth, birthDay,

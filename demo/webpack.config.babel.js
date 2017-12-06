@@ -5,7 +5,7 @@ const WDS_PORT = 7000;
 
 export default {
     entry: [
-        './src/client/js',
+        'babel-polyfill', './src/client/js',
     ],
     output: {
         filename: 'js/bundle.js',
