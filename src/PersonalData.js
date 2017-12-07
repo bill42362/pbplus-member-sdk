@@ -1,7 +1,11 @@
 // PersonalData.js
 'use strict';
 import 'isomorphic-fetch';
-import { PERSONAL_DATA_BASE_URL } from './BaseUrl.js';
+import {
+    PERSONAL_DATA_BASE_URL,
+    VALIDATED_INFO_BASE_URL,
+    FILL_EMAIL_BASE_URL
+} from './BaseUrl.js';
 import PictureEditor from './PictureEditor.js';
 import { trimObject } from './Utils.js';
 
@@ -10,7 +14,7 @@ const defaultState = {
     birthYear: '', birthMonth: '', birthDay: '',
     country: '', mobile: '',
     mobileVerifyCode: '',
-    email: '',
+    email: '', isEmailValidated: false,
     zipcode: '', address: '',
     submitResult: {isSuccess: undefined, message: ''},
 };
@@ -45,14 +49,12 @@ const fetchData = () => { return (dispatch, getState) => {
             src,
             name, nickname, gender,
             birth_year: birthYear, birth_month: birthMonth, birth_day: birthDay,
-            country, mobile, email,
             zipcode, address
         } = response.message;
         const newValueMap = trimObject({
             name, nickname, gender,
             birthYear, birthMonth, birthDay,
-            country, mobile, email,
-            zipcode, address
+            zipcode, address,
         });
         dispatch(updateValue({ newValueMap }));
         if(src) { dispatch(PictureEditor.Actions.updateImageSource(src)); }
@@ -60,19 +62,66 @@ const fetchData = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
+const fetchValidatedData = () => { return (dispatch, getState) => {
+    const { userUuid: uuid } = getState().pbplusMemberCenter;
+    fetch(VALIDATED_INFO_BASE_URL, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ uuid })
+    })
+    .then(response => {
+        if(response.status >= 400) { throw new Error('Bad response from server'); }
+        return response.json();
+    })
+    .then(response => {
+        const { email, country_code: country, mobile } = response.message;
+        const newValueMap = trimObject({
+            email, country, mobile,
+            isEmailValidated: !!email,
+        });
+        dispatch(updateValue({ newValueMap }));
+    })
+    .catch(error => { console.log(error); });
+}; };
+
+const validateEmail = ({ email }) => { return (dispatch, getState) => {
+    const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const putData = { uuid, email };
+    fetch(FILL_EMAIL_BASE_URL, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(putData)
+    })
+    .then(response => {
+        if(response.status >= 400) { throw new Error('Bad response from server'); }
+        return response.json();
+    })
+    .then(response => {
+        const isSuccess = 200 === response.status;
+        dispatch(updateValue({newValueMap: {submitResult: { isSuccess, message: response.message}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    })
+    .catch(error => {
+        dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '內部錯誤，請稍後再試。'}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    });
+}; };
+
 const submit = ({
     photo, nickname, name, gender,
     birthYear, birthMonth, birthDay,
-    country, mobile, mobileVerifyCode,
-    email, zipcode, address
+    zipcode, address
 }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = Object.assign({ uuid }, {
         birthday: `${birthYear}-${birthMonth}-${birthDay}`,
         picture: photo,
         nickname, name, gender,
-        country, mobile, mobileVerifyCode,
-        email, zipcode, address
+        zipcode, address
     });
     fetch(`${PERSONAL_DATA_BASE_URL}/edit`, {
         method: 'put',
@@ -104,6 +153,6 @@ const submit = ({
     });
 }; };
 
-const Actions = { updateValue, fetchData, submit };
+const Actions = { updateValue, fetchData, fetchValidatedData, submit, validateEmail };
 
 export default { Reducer, Actions };
