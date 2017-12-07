@@ -7,4 +7,5 @@ export const POINTS_BASE_URL = `${MEMBER_CENTER_BASE_URL}/points`;
 export const PERSONAL_DATA_BASE_URL = `${MEMBER_CENTER_BASE_URL}/member_data`;
 
 export const MEMBER_BASE_URL = 'https://memberapi.pbplus.me';
+export const VALIDATED_INFO_BASE_URL = `${MEMBER_BASE_URL}/getUserInfo`;
 export const FILL_EMAIL_BASE_URL = `${MEMBER_BASE_URL}/fillEmail`;
