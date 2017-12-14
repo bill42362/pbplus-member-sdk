@@ -16,7 +16,10 @@ const defaultState = uuidFromSearch || uuidFromCookie || newUuid();
 const saveUuidToCookie = ({ uuid }) => {
     const dateNow = new Date();
     const dateTwoWeeksLater = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate() + 14);
-    saveCookieByName({name: COOKIE_NAME, data: uuid, expireDate: dateTwoWeeksLater, domain: '.pbplus.me'});
+    saveCookieByName({
+        name: COOKIE_NAME, data: uuid, expireDate: dateTwoWeeksLater,
+        domain: '.pbplus.me', path: '/',
+    });
 };
 
 if(!uuidFromCookie || (uuidFromSearch && uuidFromSearch !== uuidFromCookie)) {
