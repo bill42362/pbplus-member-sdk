@@ -119,7 +119,6 @@ const submit = ({ orders }) => { return (dispatch, getState) => {
         return Promise.all(responses.map(response => response.json()));
     })
     .then(responses => {
-        alert('折扣碼將在十天內出現在您個人的通知中心，謝謝您');
         orders.forEach(order => dispatch(updateRewardSelectCount({id: order.id, count: 0})));
         return dispatch(fetchPoints());
     })

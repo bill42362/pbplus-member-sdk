@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import PointCounter from './PointCounter.js';
+import MemberCenter from './MemberCenter.js';
 import { PbplusPointCounter } from 'pbplus-member-ui';
 
 const PointCounterContainer = connect(
@@ -20,7 +21,10 @@ const PointCounterContainer = connect(
             return dispatch(PointCounter.Actions.updateRewardSelectCount({ id, count }));
         },
         fetchPoints: () => dispatch(PointCounter.Actions.fetchPoints()),
-        submit: ({ orders }) => dispatch(PointCounter.Actions.submit({ orders })),
+        submit: ({ orders }) => {
+            return dispatch(PointCounter.Actions.submit({ orders }))
+            .then(dispatch(MemberCenter.Actions.updateActiveTab('notice-center')));
+        },
     }; }
 )(PbplusPointCounter);
 
