@@ -22,6 +22,12 @@ const PersonalDataContainer = connect(
             dispatch(PersonalData.Actions.fetchData());
             dispatch(PersonalData.Actions.fetchValidatedData());
         },
+        sendValidateMobileMessage: ({ country, mobile }) => {
+            dispatch(PersonalData.Actions.sendValidateMobileMessage({ country, mobile }));
+        },
+        submitMobileVerifyCode: ({ mobileVerifyCode }) => {
+            dispatch(PersonalData.Actions.submitMobileVerifyCode({ mobileVerifyCode }));
+        },
         validateEmail: ({ email }) => { dispatch(PersonalData.Actions.validateEmail({ email })); },
         submit: ({
             photo, nickname, name, gender,

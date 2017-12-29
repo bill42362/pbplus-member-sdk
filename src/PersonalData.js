@@ -4,6 +4,8 @@ import 'isomorphic-fetch';
 import {
     PERSONAL_DATA_BASE_URL,
     VALIDATED_INFO_BASE_URL,
+    SEND_MOBILE_CAPTCHA_BASE_URL,
+    VERIFY_MOBILE_CAPTCHA_BASE_URL,
     FILL_EMAIL_BASE_URL
 } from './BaseUrl.js';
 import PictureEditor from './PictureEditor.js';
@@ -12,8 +14,8 @@ import { trimObject } from './Utils.js';
 const defaultState = {
     name: '', nickname: '', gender: '',
     birthYear: '', birthMonth: '', birthDay: '',
-    country: '', mobile: '',
-    mobileVerifyCode: '',
+    country: '', mobile: '', isMobileValidated: false,
+    mobileVerifyCode: '', isMobileVerifyCodeSent: false,
     email: '', isEmailValidated: false,
     zipcode: '', address: '',
     submitResult: {isSuccess: undefined, message: ''},
@@ -78,10 +80,81 @@ const fetchValidatedData = () => { return (dispatch, getState) => {
         const newValueMap = trimObject({
             email, country, mobile,
             isEmailValidated: !!email,
+            isMobileValidated: !!country && !!mobile
         });
         dispatch(updateValue({ newValueMap }));
     })
     .catch(error => { console.log(error); });
+}; };
+
+const sendValidateMobileMessage = ({ country, mobile }) => { return (dispatch, getState) => {
+    const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const putData = { uuid, mobile, country };
+    fetch(SEND_MOBILE_CAPTCHA_BASE_URL, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(putData)
+    })
+    .then(response => {
+        if(response.status >= 400) { throw new Error('Bad response from server'); }
+        return response.json();
+    })
+    .then(response => {
+        const isSuccess = 200 === response.status;
+        if(isSuccess) {
+            dispatch(updateValue({newValueMap: {isMobileVerifyCodeSent: true}}));
+        } else {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '傳送失敗。'}}}));
+            setTimeout(() => {
+                dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+            }, 6000);
+        }
+    })
+    .catch(error => {
+        dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '內部錯誤，請稍後再試。'}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    });
+}; };
+
+const submitMobileVerifyCode = ({ mobileVerifyCode }) => { return (dispatch, getState) => {
+    const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const { mobile, country } = getState().pbplusMemberCenter.personalData;
+    const putData = {
+        captcha: mobileVerifyCode,
+        mobile, country, uuid
+    };
+    fetch(VERIFY_MOBILE_CAPTCHA_BASE_URL, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(putData)
+    })
+    .then(response => {
+        if(response.status >= 400) { throw new Error('Bad response from server'); }
+        return response.json();
+    })
+    .then(response => {
+        const isSuccess = 200 === response.status;
+        if(isSuccess) {
+            dispatch(updateValue({newValueMap: {isMobileValidated: true}}));
+            dispatch(updateValue({newValueMap: {submitResult: { isSuccess, message: '手機驗證成功'}}}));
+            setTimeout(() => {
+                dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+            }, 6000);
+        } else {
+            dispatch(updateValue({newValueMap: {submitResult: { isSuccess, message: '驗證失敗，請十分鐘後再試'}}}));
+            setTimeout(() => {
+                dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+            }, 6000);
+        }
+    })
+    .catch(error => {
+        dispatch(updateValue({newValueMap: {submitResult: {isSuccess: false, message: '內部錯誤，請稍後再試。'}}}));
+        setTimeout(() => {
+            dispatch(updateValue({newValueMap: {submitResult: {isSuccess: undefined, message: ''}}}));
+        }, 6000);
+    });
 }; };
 
 const validateEmail = ({ email }) => { return (dispatch, getState) => {
@@ -153,6 +226,10 @@ const submit = ({
     });
 }; };
 
-const Actions = { updateValue, fetchData, fetchValidatedData, submit, validateEmail };
+const Actions = {
+    updateValue, fetchData, fetchValidatedData, submit,
+    sendValidateMobileMessage, submitMobileVerifyCode,
+    validateEmail
+};
 
 export default { Reducer, Actions };
