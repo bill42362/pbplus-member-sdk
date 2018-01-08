@@ -177,11 +177,19 @@ const updateUsingRewardType = ({ usingRewardType }) => { return (dispatch, getSt
 
 const submit = ({ orders }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const { usingRewardType } = getState().pbplusMemberCenter.pointCounter;
+    const { name, country, mobile, zipcode, address } = getState().pbplusMemberCenter.pointCounter.receiverInfo;
     const putDataTemplate = { uuid };
     return Promise.all(orders.map(order => {
-        const putData = Object.assign({}, putDataTemplate, {
+        let putData = Object.assign({}, putDataTemplate, {
             item_id: order.id, amount: order.selectedCount
         });
+        if('real' === usingRewardType) {
+            putData = Object.assign({}, putData, {
+                phone: `+${country}-${mobile}`,
+                name, zipcode, address,
+            });
+        }
         return fetch(`${POINTS_BASE_URL}/exchange`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},

@@ -42,6 +42,11 @@ const PointCounterContainer = connect(
     (state, ownProps) => {
         const { points, rewards, usingRewardType, usingNotice, isNoticeChecked } = state.pbplusMemberCenter.pointCounter;
         const usingRewards = rewards.filter(reward => usingRewardType === reward.type);
+        let canSubmit = isNoticeChecked && !!usingRewards.filter(reward => reward.selectedCount).length;
+        if('real' === usingRewardType) {
+            const { name, country, mobile, zipcode, address } = state.pbplusMemberCenter.pointCounter.receiverInfo;
+            canSubmit = canSubmit && !!(name && country && mobile && zipcode && address);
+        }
         return {
             points: points - usingRewards.reduce((current, reward) => {
                 return current + (reward.selectedCount*reward.pointCost);
@@ -49,7 +54,7 @@ const PointCounterContainer = connect(
             rewards: usingRewards,
             rewardTypeTab: <ConnectedPbplusPointCounterRewardTypeTab />,
             receiverInfo: <ConnectedPbplusPointCounterReceiverInfo />,
-            usingRewardType, usingNotice, isNoticeChecked,
+            usingRewardType, usingNotice, isNoticeChecked, canSubmit
         };
     },
     (dispatch, ownProps) => { return {
