@@ -1,7 +1,6 @@
 // PointCounter.js
 'use strict';
 import 'isomorphic-fetch';
-import React from 'react';
 import PersonalData from './PersonalData.js';
 import { POINTS_BASE_URL } from './BaseUrl.js';
 
@@ -10,36 +9,20 @@ const noticeOfRewardTypes = {
         title: '折扣兌換注意事項',
         contents: [
             {
-                content: '紅利點數轉入計算時間:',
-                uls: [
-                    {content: '好物商城購物確認通過鑑賞期無退貨後轉入(每月15、30日入帳、遇假日則延後)。'},
-                    {content: '報名揪in活動，於活動結束後 5 個工作天，確定您無退費後轉入。'},
-                ],
+                content: '每次申請需以3000點為一個單位，當您累積至3000點時，即可申請50元的折扣代碼，'
+                    + '6000點即可申請100 元的折扣代碼。每一元都好超值!'
             },
-            {content: '商城折扣碼及報名折扣碼不能交換使用。'},
-            {content: '每次從點數兌換現金的作業，請給 pb+ 小編 10 個工作天。'},
-            {content: '使用紅利點數折抵之消費，若退貨點數不予退回喔!'},
-            {content: '可折抵之金額依照商品及活動類型有不同上限。'},
-            {content: 'Pb+ 的管理員會隨時注意點數的使用情形，為所有會員規劃並調整紅利的使用規則，屆時以本頁公佈辦法為主。'},
-            {content: <span>
-                如果對使用紅利有任何的問題，歡迎
-                <a href='mailto:support@pcgbros.com'>聯絡我們</a>。
-            </span>},
         ],
     },
     real: {
         title: '超值兌物注意事項',
         contents: [
-            {content: '紅利點數轉入計算時間:'},
-            {content: '商城折扣碼及報名折扣碼不能交換使用。'},
-            {content: '每次從點數兌換現金的作業，請給 pb+ 小編 10 個工作天。'},
-            {content: '使用紅利點數折抵之消費，若退貨點數不予退回喔!'},
-            {content: '可折抵之金額依照商品及活動類型有不同上限。'},
-            {content: 'Pb+ 的管理員會隨時注意點數的使用情形，為所有會員規劃並調整紅利的使用規則，屆時以本頁公佈辦法為主。'},
-            {content: <span>
-                如果對使用紅利有任何的問題，歡迎
-                <a href='mailto:support@pcgbros.com'>聯絡我們</a>。
-            </span>},
+            {content: '超值兌換後，除因商品具有瑕疵外，一律不受理退換。'},
+            {
+                content: '兌換商品皆為限量，以申請先後順序排定，請隨時關注時效性。'
+                    + '會員不得在活動結束後或數量發送完畢後，堅持兌換該項商品。'
+            },
+            {content: 'Pb+ 得保留修正、暫停與終止本紅利制度之權利。'},
         ],
     },
 };
