@@ -58,6 +58,7 @@ const PointCounterContainer = connect(
         };
     },
     (dispatch, ownProps) => { return {
+        fetchPersonalData: () => dispatch(PointCounter.Actions.fetchPersonalData()),
         fetchRewardList: () => dispatch(PointCounter.Actions.fetchRewardList()),
         updateRewardSelectCount: ({ id, count }) => {
             return dispatch(PointCounter.Actions.updateRewardSelectCount({ id, count }));

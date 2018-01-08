@@ -2,6 +2,7 @@
 'use strict';
 import 'isomorphic-fetch';
 import React from 'react';
+import PersonalData from './PersonalData.js';
 import { POINTS_BASE_URL } from './BaseUrl.js';
 
 const noticeOfRewardTypes = {
@@ -62,6 +63,18 @@ const getRewardTemplate = () => ({
 
 const Reducer = (state = defaultState, action) => {
     switch(action.type) {
+        case 'UPDATE_PBPLUS_PERSONAL_DATA_VALUE':
+            const newValueMap = action.payload;
+            const { name, country, mobile, zipcode, address } = state.receiverInfo;
+            const newReceiverInfo = {
+                name: name || newValueMap.name,
+                country: country || newValueMap.country,
+                mobile: mobile || newValueMap.mobile,
+                zipcode: zipcode || newValueMap.zipcode,
+                address: address || newValueMap.address,
+            };
+            return Object.assign({}, state, {receiverInfo: newReceiverInfo});
+            break;
         case 'UPDATE_PBPLUS_USING_REWARD_TYPE':
             return Object.assign({}, state, {
                 usingRewardType: action.payload.usingRewardType,
@@ -167,6 +180,12 @@ const fetchRewardList = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
+const fetchPersonalData = () => { return (dispatch, getState) => {
+    const { name, country, mobile, zipcode, address } = getState().pbplusMemberCenter.pointCounter.receiverInfo;
+    if(!name) { dispatch(PersonalData.Actions.fetchData()); }
+    if(!country || !mobile || !zipcode || !address) { dispatch(PersonalData.Actions.fetchValidatedData()); }
+}; };
+
 const updateReceiverInfo = ({ newValueMap }) => { return (dispatch, getState) => {
     return dispatch({type: 'UPDATE_PBPLUS_RECEIVER_INFO', payload: { newValueMap }});
 }; };
@@ -214,7 +233,7 @@ const submit = ({ orders }) => { return (dispatch, getState) => {
 const Actions = {
     updatePointCount, updateUsingRewardType, updateIsNoticeChecked,
     fetchRewardList, updateRewardSelectCount, updateReceiverInfo,
-    submit, fetchPoints
+    submit, fetchPoints, fetchPersonalData
 };
 
 export default { Reducer, Actions };
