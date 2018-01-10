@@ -35,9 +35,9 @@ const updateMemberSummary = ({ summary }) => { return (dispatch, getState) => {
     return dispatch({type: 'UPDATE_PBPLUS_MEMBER_SUMMARY', payload: { summary }});
 }; };
 
-const fetchMemberSummary = () => { return (dispatch, getState) => {
-    dispatch(PointCounter.Actions.fetchPoints());
-    dispatch(PersonalData.Actions.fetchData());
+const fetchMemberSummary = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
+    dispatch(PointCounter.Actions.fetchPoints({ memberCenterBaseUrl }));
+    dispatch(PersonalData.Actions.fetchData({ memberCenterBaseUrl }));
     return {type: 'NULL', payload: {}};
 }; };
 

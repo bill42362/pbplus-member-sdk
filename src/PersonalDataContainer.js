@@ -13,36 +13,39 @@ const PersonalDataContainer = connect(
             imageInputBox: <ImageInputBoxContainer />,
         });
     },
-    (dispatch, ownProps) => { return {
-        updateValue: ({ newValueMap }) => {
-            dispatch(PersonalData.Actions.updateValue({ newValueMap }));
-        },
-        updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
-        fetchPersonalData: () => {
-            dispatch(PersonalData.Actions.fetchData());
-            dispatch(PersonalData.Actions.fetchValidatedData());
-        },
-        sendValidateMobileMessage: ({ country, mobile }) => {
-            dispatch(PersonalData.Actions.sendValidateMobileMessage({ country, mobile }));
-        },
-        submitMobileVerifyCode: ({ mobileVerifyCode }) => {
-            dispatch(PersonalData.Actions.submitMobileVerifyCode({ mobileVerifyCode }));
-        },
-        validateEmail: ({ email }) => { dispatch(PersonalData.Actions.validateEmail({ email })); },
-        submit: ({
-            photo, nickname, name, gender,
-            birthYear, birthMonth, birthDay,
-            country, mobile, mobileVerifyCode,
-            email, zipcode, address
-        }) => {
-            dispatch(PersonalData.Actions.submit({
+    (dispatch, ownProps) => {
+        const { memberBaseUrl, memberCenterBaseUrl } = ownProps;
+        return {
+            updateValue: ({ newValueMap }) => {
+                dispatch(PersonalData.Actions.updateValue({ newValueMap }));
+            },
+            updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
+            fetchPersonalData: () => {
+                dispatch(PersonalData.Actions.fetchData({ memberCenterBaseUrl }));
+                dispatch(PersonalData.Actions.fetchValidatedData({ memberBaseUrl }));
+            },
+            sendValidateMobileMessage: ({ country, mobile }) => {
+                dispatch(PersonalData.Actions.sendValidateMobileMessage({ country, mobile, memberBaseUrl }));
+            },
+            submitMobileVerifyCode: ({ mobileVerifyCode }) => {
+                dispatch(PersonalData.Actions.submitMobileVerifyCode({ mobileVerifyCode, memberBaseUrl }));
+            },
+            validateEmail: ({ email }) => {
+                dispatch(PersonalData.Actions.validateEmail({ email, memberBaseUrl }));
+            },
+            submit: ({
                 photo, nickname, name, gender,
                 birthYear, birthMonth, birthDay,
-                country, mobile, mobileVerifyCode,
-                email, zipcode, address
-            }));
-        },
-    }; }
+                zipcode, address,
+            }) => {
+                dispatch(PersonalData.Actions.submit({
+                    photo, nickname, name, gender,
+                    birthYear, birthMonth, birthDay,
+                    zipcode, address,
+                }));
+            },
+        };
+    }
 )(PbplusPersonalData);
 
 export default PersonalDataContainer;
