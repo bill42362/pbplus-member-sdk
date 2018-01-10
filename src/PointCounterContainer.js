@@ -57,21 +57,24 @@ const PointCounterContainer = connect(
             usingRewardType, usingNotice, isNoticeChecked, canSubmit
         };
     },
-    (dispatch, ownProps) => { return {
-        fetchPersonalData: () => dispatch(PointCounter.Actions.fetchPersonalData()),
-        fetchRewardList: () => dispatch(PointCounter.Actions.fetchRewardList()),
-        updateRewardSelectCount: ({ id, count }) => {
-            return dispatch(PointCounter.Actions.updateRewardSelectCount({ id, count }));
-        },
-        fetchPoints: () => dispatch(PointCounter.Actions.fetchPoints()),
-        updateIsNoticeChecked: ({ isNoticeChecked }) => {
-            return dispatch(PointCounter.Actions.updateIsNoticeChecked({ isNoticeChecked }));
-        },
-        submit: ({ orders }) => {
-            return dispatch(PointCounter.Actions.submit({ orders }))
-            .then(dispatch(MemberCenter.Actions.updateActiveTab('notice-center')));
-        },
-    }; }
+    (dispatch, ownProps) => {
+        const { memberBaseUrl, memberCenterBaseUrl } = ownProps;
+        return {
+            fetchPersonalData: () => dispatch(PointCounter.Actions.fetchPersonalData({ memberBaseUrl, memberCenterBaseUrl })),
+            fetchRewardList: () => dispatch(PointCounter.Actions.fetchRewardList({ memberCenterBaseUrl })),
+            updateRewardSelectCount: ({ id, count }) => {
+                return dispatch(PointCounter.Actions.updateRewardSelectCount({ id, count }));
+            },
+            fetchPoints: () => dispatch(PointCounter.Actions.fetchPoints({ memberCenterBaseUrl })),
+            updateIsNoticeChecked: ({ isNoticeChecked }) => {
+                return dispatch(PointCounter.Actions.updateIsNoticeChecked({ isNoticeChecked }));
+            },
+            submit: ({ orders }) => {
+                return dispatch(PointCounter.Actions.submit({ orders, memberCenterBaseUrl }))
+                .then(dispatch(MemberCenter.Actions.updateActiveTab('notice-center')));
+            },
+        };
+    }
 )(PbplusPointCounter);
 
 export default PointCounterContainer;

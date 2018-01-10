@@ -20,9 +20,12 @@ const MemberSummaryContainer = connect(
             {random: Math.random()}
         );
     },
-    (dispatch, ownProps) => { return {
-        fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary()); },
-    }; }
+    (dispatch, ownProps) => {
+        const { memberCenterBaseUrl } = ownProps;
+        return {
+            fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary({ memberCenterBaseUrl })); },
+        };
+    }
 )(PbplusMemberSummary);
 
 export default MemberSummaryContainer;

@@ -1,7 +1,6 @@
 // Calendar.js
 'use strict';
 import 'isomorphic-fetch';
-import { CALENDAR_BASE_URL } from './BaseUrl.js';
 
 const today = new Date();
 const defaultState = {
@@ -32,10 +31,10 @@ const updateMonth = ({ year, month }) => {
     return {type: 'UPDATE_PBPLUS_CALENDAR_MONTH', payload: { year, month }};
 };
 
-const fetchCommingEvents = () => { return (dispatch, getState) => {
+const fetchCommingEvents = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     let allEvents = [], allPromotions = [];
-    fetch(`${CALENDAR_BASE_URL}/comming_events`, {method: 'get'})
+    fetch(`${memberCenterBaseUrl}/events/comming_events`, {method: 'get'})
     .then(response => {
         if(response.status >= 400) { throw new Error('Bad response from server'); }
         return response.json();
@@ -46,7 +45,7 @@ const fetchCommingEvents = () => { return (dispatch, getState) => {
         allEvents = events.map(event => Object.assign({}, event, {isParticipated: false}));
     })
     .then(() => {
-        return fetch(`${CALENDAR_BASE_URL}/participation`, {
+        return fetch(`${memberCenterBaseUrl}/events/participation`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ uuid })

@@ -11,11 +11,16 @@ const NoticeCenterContainer = connect(
             expendedNoticeId: state.pbplusMemberCenter.noticeCenter.expendedNoticeId,
         };
     },
-    (dispatch, ownProps) => { return {
-        expendNotice: ({ noticeId }) => { dispatch(NoticeCenter.Actions.updateExpendedNotice({id: noticeId})); },
-        clearExpendNotice: () => { dispatch(NoticeCenter.Actions.updateExpendedNotice({id: '-1'})); },
-        fetchNotices: () => { dispatch(NoticeCenter.Actions.fetchNotices()); },
-    }; }
+    (dispatch, ownProps) => {
+        const { memberCenterBaseUrl } = ownProps;
+        return {
+            expendNotice: ({ noticeId }) => {
+                dispatch(NoticeCenter.Actions.updateExpendedNotice({id: noticeId, memberCenterBaseUrl }));
+            },
+            clearExpendNotice: () => { dispatch(NoticeCenter.Actions.updateExpendedNotice({id: '-1', memberCenterBaseUrl })); },
+            fetchNotices: () => { dispatch(NoticeCenter.Actions.fetchNotices({ memberCenterBaseUrl })); },
+        };
+    }
 )(PbplusNoticeCenter);
 
 export default NoticeCenterContainer;
