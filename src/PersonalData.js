@@ -1,13 +1,6 @@
 // PersonalData.js
 'use strict';
 import 'isomorphic-fetch';
-import {
-    PERSONAL_DATA_BASE_URL,
-    VALIDATED_INFO_BASE_URL,
-    SEND_MOBILE_CAPTCHA_BASE_URL,
-    VERIFY_MOBILE_CAPTCHA_BASE_URL,
-    FILL_EMAIL_BASE_URL
-} from './BaseUrl.js';
 import PictureEditor from './PictureEditor.js';
 import { trimObject } from './Utils.js';
 
@@ -35,9 +28,9 @@ const updateValue = ({ newValueMap }) => {
     return {type: 'UPDATE_PBPLUS_PERSONAL_DATA_VALUE', payload: newValueMap};
 };
 
-const fetchData = () => { return (dispatch, getState) => {
+const fetchData = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
-    fetch(`${PERSONAL_DATA_BASE_URL}`, {
+    fetch(`${memberCenterBaseUrl}/member_data`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ uuid })
@@ -64,9 +57,9 @@ const fetchData = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
-const fetchValidatedData = () => { return (dispatch, getState) => {
+const fetchValidatedData = ({ memberBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
-    fetch(VALIDATED_INFO_BASE_URL, {
+    fetch(`${memberBaseUrl}/getUserInfo`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ uuid })
@@ -87,10 +80,10 @@ const fetchValidatedData = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
-const sendValidateMobileMessage = ({ country, mobile }) => { return (dispatch, getState) => {
+const sendValidateMobileMessage = ({ country, mobile, memberBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = { uuid, mobile, country };
-    fetch(SEND_MOBILE_CAPTCHA_BASE_URL, {
+    fetch(`${memberBaseUrl}/sendCaptcha`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(putData)
@@ -118,14 +111,14 @@ const sendValidateMobileMessage = ({ country, mobile }) => { return (dispatch, g
     });
 }; };
 
-const submitMobileVerifyCode = ({ mobileVerifyCode }) => { return (dispatch, getState) => {
+const submitMobileVerifyCode = ({ mobileVerifyCode, memberBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const { mobile, country } = getState().pbplusMemberCenter.personalData;
     const putData = {
         captcha: mobileVerifyCode,
         mobile, country, uuid
     };
-    fetch(VERIFY_MOBILE_CAPTCHA_BASE_URL, {
+    fetch(`${memberBaseUrl}/verifyCaptcha`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(putData)
@@ -157,10 +150,10 @@ const submitMobileVerifyCode = ({ mobileVerifyCode }) => { return (dispatch, get
     });
 }; };
 
-const validateEmail = ({ email }) => { return (dispatch, getState) => {
+const validateEmail = ({ email, memberBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = { uuid, email };
-    fetch(FILL_EMAIL_BASE_URL, {
+    fetch(`${memberBaseUrl}/fillEmail`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(putData)
@@ -187,7 +180,8 @@ const validateEmail = ({ email }) => { return (dispatch, getState) => {
 const submit = ({
     photo, nickname, name, gender,
     birthYear, birthMonth, birthDay,
-    zipcode, address
+    zipcode, address,
+    memberCenterBaseUrl
 }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = Object.assign({ uuid }, {
@@ -196,7 +190,7 @@ const submit = ({
         nickname, name, gender,
         zipcode, address
     });
-    fetch(`${PERSONAL_DATA_BASE_URL}/edit`, {
+    fetch(`${memberCenterBaseUrl}/member_data/edit`, {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(putData)

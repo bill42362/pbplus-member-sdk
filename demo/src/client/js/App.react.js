@@ -31,7 +31,10 @@ class App extends React.Component {
             {isUserLoggedIn && <div className='logout-pbplus-button' role='button' onClick={this.logout}>
                 登出 pb+
             </div>}
-            <PbplusMemberCenter.Container />
+            <PbplusMemberCenter.Container
+                memberBaseUrl='https://memberapi.pbplus.me'
+                memberCenterBaseUrl='https://membercenterapi.pbplus.me'
+            />
         </div>;
     }
 }

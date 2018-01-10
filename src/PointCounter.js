@@ -2,7 +2,6 @@
 'use strict';
 import 'isomorphic-fetch';
 import PersonalData from './PersonalData.js';
-import { POINTS_BASE_URL } from './BaseUrl.js';
 
 const noticeOfRewardTypes = {
     virtual: {
@@ -115,9 +114,9 @@ const updateIsNoticeChecked = ({ isNoticeChecked }) => {
     return {type: 'UPDATE_PBPLUS_IS_NOTICE_CHECKED', payload: { isNoticeChecked }};
 };
 
-const fetchPoints = () => { return (dispatch, getState) => {
+const fetchPoints = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
-    fetch(`${POINTS_BASE_URL}`, {
+    fetch(`${memberCenterBaseUrl}/points`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ uuid })
@@ -139,8 +138,8 @@ const fetchPoints = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
-const fetchRewardList = () => { return (dispatch, getState) => {
-    fetch(`${POINTS_BASE_URL}/reward_list`, {method: 'get'})
+const fetchRewardList = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
+    fetch(`${memberCenterBaseUrl}/points/reward_list`, {method: 'get'})
     .then(response => {
         if(response.status >= 400) { throw new Error('Bad response from server'); }
         return response.json();
@@ -163,10 +162,12 @@ const fetchRewardList = () => { return (dispatch, getState) => {
     .catch(error => { console.log(error); });
 }; };
 
-const fetchPersonalData = () => { return (dispatch, getState) => {
+const fetchPersonalData = ({ memberBaseUrl, memberCenterBaseUrl }) => { return (dispatch, getState) => {
     const { name, country, mobile, zipcode, address } = getState().pbplusMemberCenter.pointCounter.receiverInfo;
-    if(!name) { dispatch(PersonalData.Actions.fetchData()); }
-    if(!country || !mobile || !zipcode || !address) { dispatch(PersonalData.Actions.fetchValidatedData()); }
+    if(!name) { dispatch(PersonalData.Actions.fetchData({ memberCenterBaseUrl })); }
+    if(!country || !mobile || !zipcode || !address) {
+        dispatch(PersonalData.Actions.fetchValidatedData({ memberBaseUrl }));
+    }
 }; };
 
 const updateReceiverInfo = ({ newValueMap }) => { return (dispatch, getState) => {
@@ -177,7 +178,7 @@ const updateUsingRewardType = ({ usingRewardType }) => { return (dispatch, getSt
     return dispatch({type: 'UPDATE_PBPLUS_USING_REWARD_TYPE', payload: { usingRewardType }});
 }; };
 
-const submit = ({ orders }) => { return (dispatch, getState) => {
+const submit = ({ orders, memberCenterBaseUrl }) => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const { usingRewardType } = getState().pbplusMemberCenter.pointCounter;
     const { name, country, mobile, zipcode, address } = getState().pbplusMemberCenter.pointCounter.receiverInfo;
@@ -192,7 +193,7 @@ const submit = ({ orders }) => { return (dispatch, getState) => {
                 name, zipcode, address,
             });
         }
-        return fetch(`${POINTS_BASE_URL}/exchange`, {
+        return fetch(`${memberCenterBaseUrl}/points/exchange`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(putData)

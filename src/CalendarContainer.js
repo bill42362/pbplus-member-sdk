@@ -14,9 +14,12 @@ const CalendarContainer = connect(
         return Object.assign({}, calendar, {events: eventsWithDate, promotions: promotionsWithDate});
     },
     (dispatch, ownProps) => {
+        const { memberCenterBaseUrl } = ownProps;
         return {
-            fetchCommingEvents: () => { dispatch(Calendar.Actions.fetchCommingEvents()); },
-            selectDate: ({ date }) => { dispatch(Calendar.Actions.updateSelectedDate({ date})); },
+            fetchCommingEvents: () => {
+                return dispatch(Calendar.Actions.fetchCommingEvents({ memberCenterBaseUrl }));
+            },
+            selectDate: ({ date }) => { dispatch(Calendar.Actions.updateSelectedDate({ date })); },
             goThisMonth: () => {
                 const today = new Date();
                 dispatch(Calendar.Actions.updateMonth({month: today.getMonth(), year: today.getFullYear()}));
