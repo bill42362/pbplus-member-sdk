@@ -28,7 +28,8 @@ const updateValue = ({ newValueMap }) => {
     return {type: 'UPDATE_PBPLUS_PERSONAL_DATA_VALUE', payload: newValueMap};
 };
 
-const fetchData = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
+const fetchData = () => { return (dispatch, getState) => {
+    const { memberCenter: memberCenterBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     fetch(`${memberCenterBaseUrl}/member_data`, {
         method: 'post',
@@ -57,7 +58,8 @@ const fetchData = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => 
     .catch(error => { console.log(error); });
 }; };
 
-const fetchValidatedData = ({ memberBaseUrl }) => { return (dispatch, getState) => {
+const fetchValidatedData = () => { return (dispatch, getState) => {
+    const { member: memberBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     fetch(`${memberBaseUrl}/getUserInfo`, {
         method: 'post',
@@ -80,7 +82,8 @@ const fetchValidatedData = ({ memberBaseUrl }) => { return (dispatch, getState) 
     .catch(error => { console.log(error); });
 }; };
 
-const sendValidateMobileMessage = ({ country, mobile, memberBaseUrl }) => { return (dispatch, getState) => {
+const sendValidateMobileMessage = ({ country, mobile }) => { return (dispatch, getState) => {
+    const { member: memberBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = { uuid, mobile, country };
     fetch(`${memberBaseUrl}/sendCaptcha`, {
@@ -111,7 +114,8 @@ const sendValidateMobileMessage = ({ country, mobile, memberBaseUrl }) => { retu
     });
 }; };
 
-const submitMobileVerifyCode = ({ mobileVerifyCode, memberBaseUrl }) => { return (dispatch, getState) => {
+const submitMobileVerifyCode = ({ mobileVerifyCode }) => { return (dispatch, getState) => {
+    const { member: memberBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const { mobile, country } = getState().pbplusMemberCenter.personalData;
     const putData = {
@@ -150,7 +154,8 @@ const submitMobileVerifyCode = ({ mobileVerifyCode, memberBaseUrl }) => { return
     });
 }; };
 
-const validateEmail = ({ email, memberBaseUrl }) => { return (dispatch, getState) => {
+const validateEmail = ({ email }) => { return (dispatch, getState) => {
+    const { member: memberBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = { uuid, email };
     fetch(`${memberBaseUrl}/fillEmail`, {
@@ -181,8 +186,8 @@ const submit = ({
     photo, nickname, name, gender,
     birthYear, birthMonth, birthDay,
     zipcode, address,
-    memberCenterBaseUrl
 }) => { return (dispatch, getState) => {
+    const { memberCenter: memberCenterBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     const putData = Object.assign({ uuid }, {
         birthday: `${birthYear}-${birthMonth}-${birthDay}`,
