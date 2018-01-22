@@ -2,6 +2,8 @@
 'use strict';
 
 const defaultState = {
+    auth: 'https://authapi.pbplus.me/account/api/auth_state',
+    // auth: 'https://dev-server-elb-1887534414.ap-northeast-1.elb.amazonaws.com:8096/account/api/auth_state',
     member: 'https://memberapi.pbplus.me',
     memberCenter: 'https://membercenterapi.pbplus.me',
 };
