@@ -14,24 +14,23 @@ const PersonalDataContainer = connect(
         });
     },
     (dispatch, ownProps) => {
-        const { memberBaseUrl, memberCenterBaseUrl } = ownProps;
         return {
             updateValue: ({ newValueMap }) => {
                 dispatch(PersonalData.Actions.updateValue({ newValueMap }));
             },
             updateImageSource: (url) => { dispatch(PictureEditor.Actions.updateImageSource(url)); },
             fetchPersonalData: () => {
-                dispatch(PersonalData.Actions.fetchData({ memberCenterBaseUrl }));
-                dispatch(PersonalData.Actions.fetchValidatedData({ memberBaseUrl }));
+                dispatch(PersonalData.Actions.fetchData());
+                dispatch(PersonalData.Actions.fetchValidatedData());
             },
             sendValidateMobileMessage: ({ country, mobile }) => {
-                dispatch(PersonalData.Actions.sendValidateMobileMessage({ country, mobile, memberBaseUrl }));
+                dispatch(PersonalData.Actions.sendValidateMobileMessage({ country, mobile }));
             },
             submitMobileVerifyCode: ({ mobileVerifyCode }) => {
-                dispatch(PersonalData.Actions.submitMobileVerifyCode({ mobileVerifyCode, memberBaseUrl }));
+                dispatch(PersonalData.Actions.submitMobileVerifyCode({ mobileVerifyCode }));
             },
             validateEmail: ({ email }) => {
-                dispatch(PersonalData.Actions.validateEmail({ email, memberBaseUrl }));
+                dispatch(PersonalData.Actions.validateEmail({ email }));
             },
             submit: ({
                 photo, nickname, name, gender,

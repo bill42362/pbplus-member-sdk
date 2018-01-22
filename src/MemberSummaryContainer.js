@@ -21,9 +21,8 @@ const MemberSummaryContainer = connect(
         );
     },
     (dispatch, ownProps) => {
-        const { memberCenterBaseUrl } = ownProps;
         return {
-            fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary({ memberCenterBaseUrl })); },
+            fetchMemberSummary: () => { dispatch(MemberSummary.Actions.fetchMemberSummary()); },
         };
     }
 )(PbplusMemberSummary);

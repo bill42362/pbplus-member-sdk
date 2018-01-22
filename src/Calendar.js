@@ -31,8 +31,9 @@ const updateMonth = ({ year, month }) => {
     return {type: 'UPDATE_PBPLUS_CALENDAR_MONTH', payload: { year, month }};
 };
 
-const fetchCommingEvents = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
+const fetchCommingEvents = () => { return (dispatch, getState) => {
     const { userUuid: uuid } = getState().pbplusMemberCenter;
+    const { memberCenter: memberCenterBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     let allEvents = [], allPromotions = [];
     fetch(`${memberCenterBaseUrl}/events/comming_events`, {method: 'get'})
     .then(response => {

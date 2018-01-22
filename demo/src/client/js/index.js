@@ -1,6 +1,5 @@
 // index.js
 'use strict';
-import 'isomorphic-fetch';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { connect, Provider } from 'react-redux';
@@ -16,28 +15,25 @@ const reducer = combineReducers({
     pbplusAuthState: AuthState.Reducer,
     pbplusMemberCenter: PbplusMemberCenter.Reducer,
 })
-const store = createStore(reducer, applyMiddleware(ReduxThunk));
+const store = createStore(
+    reducer,
+    {
+        pbplusMemberCenter: {
+            baseUrl: {
+                auth: 'https://authapi.pbplus.me/account/api/auth_state',
+                memberCenter: 'https://membercenterapi.pbplus.me',
+                member: 'https://memberapi.pbplus.me',
+            }
+        }
+    },
+    applyMiddleware(ReduxThunk)
+);
 
 const refreshAuthState = () => {
-    //return fetch('https://dev-server-elb-1887534414.ap-northeast-1.elb.amazonaws.com:8096/account/api/auth_state', {
-    return fetch('https://authapi.pbplus.me/account/api/auth_state', {
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            client_id: '8486C5FA991611E790810ACA2C7BEF8A',
-            //client_id: 'B1B4A63EEEAF11E6888B0A28175C2AF1',
-            uuid: store.getState().pbplusMemberCenter.userUuid
-        })
-    })
-    .then(response => {
-        if(response.status >= 400) { throw new Error('Bad response from server'); }
-        return response.json();
-    })
-    .then(response => {
-        store.dispatch(AuthState.Actions.updateAuthState({authState: {
-            isUserLoggedIn: 200 === response.status,
-            endpoint: response.message.endpoint,
-        }}));
+    const clientId = '8486C5FA991611E790810ACA2C7BEF8A';
+    store.dispatch(PbplusMemberCenter.Actions.checkAuthState({ clientId }))
+    .then(({ isUserLoggedIn, endpoint }) => {
+        store.dispatch(AuthState.Actions.updateAuthState({authState: { isUserLoggedIn, endpoint }}));
     })
     .catch(error => console.log);
 };
