@@ -16,7 +16,18 @@ const reducer = combineReducers({
     pbplusAuthState: AuthState.Reducer,
     pbplusMemberCenter: PbplusMemberCenter.Reducer,
 })
-const store = createStore(reducer, applyMiddleware(ReduxThunk));
+const store = createStore(
+    reducer,
+    {
+        pbplusMemberCenter: {
+            baseUrl: {
+                memberCenter: 'https://membercenterapi.pbplus.me',
+                member: 'https://memberapi.pbplus.me',
+            }
+        }
+    },
+    applyMiddleware(ReduxThunk)
+);
 
 const refreshAuthState = () => {
     //return fetch('https://dev-server-elb-1887534414.ap-northeast-1.elb.amazonaws.com:8096/account/api/auth_state', {

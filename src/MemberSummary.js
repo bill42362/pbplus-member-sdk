@@ -3,7 +3,6 @@
 import 'isomorphic-fetch';
 import PointCounter from './PointCounter.js';
 import PersonalData from './PersonalData.js';
-import { NOTICE_BASE_URL } from './BaseUrl.js';
 
 const defaultState = {
     registeredDate: new Date(),
@@ -35,9 +34,9 @@ const updateMemberSummary = ({ summary }) => { return (dispatch, getState) => {
     return dispatch({type: 'UPDATE_PBPLUS_MEMBER_SUMMARY', payload: { summary }});
 }; };
 
-const fetchMemberSummary = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
-    dispatch(PointCounter.Actions.fetchPoints({ memberCenterBaseUrl }));
-    dispatch(PersonalData.Actions.fetchData({ memberCenterBaseUrl }));
+const fetchMemberSummary = () => { return (dispatch, getState) => {
+    dispatch(PointCounter.Actions.fetchPoints());
+    dispatch(PersonalData.Actions.fetchData());
     return {type: 'NULL', payload: {}};
 }; };
 

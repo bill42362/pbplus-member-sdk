@@ -2,6 +2,7 @@
 'use strict';
 import { combineReducers } from 'redux';
 import DisplayState from './DisplayState.js';
+import BaseUrl from './BaseUrl.js';
 import UserUUID from './UserUUID.js';
 import MemberSummary from './MemberSummary.js';
 import NoticeCenter from './NoticeCenter.js';
@@ -11,6 +12,7 @@ import PersonalData from './PersonalData.js';
 import PictureEditor from './PictureEditor.js';
 
 const Reducer = combineReducers({
+    baseUrl: BaseUrl.Reducer,
     userUuid: UserUUID.Reducer,
     displayState: DisplayState.Reducer,
     memberSummary: MemberSummary.Reducer,

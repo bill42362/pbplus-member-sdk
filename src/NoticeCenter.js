@@ -33,7 +33,8 @@ const updateNotice = ({ notice }) => { return (dispatch, getState) => {
     return dispatch({type: 'UPDATE_PBPLUS_NOTICE', payload: { notice }});
 }; };
 
-const updateExpendedNotice = ({ id, memberCenterBaseUrl }) => { return (dispatch, getState) => {
+const updateExpendedNotice = ({ id }) => { return (dispatch, getState) => {
+    const { memberCenter: memberCenterBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const notice = getState().pbplusMemberCenter
         .noticeCenter.notices
         .filter(notice => `${id}` === `${notice.id}`)[0];
@@ -53,7 +54,8 @@ const updateNotices = ({ notices }) => {
     return {type: 'UPDATE_PBPLUS_NOTICES', payload: { notices }};
 };
 
-const fetchNotices = ({ memberCenterBaseUrl }) => { return (dispatch, getState) => {
+const fetchNotices = () => { return (dispatch, getState) => {
+    const { memberCenter: memberCenterBaseUrl } = getState().pbplusMemberCenter.baseUrl;
     const { userUuid: uuid } = getState().pbplusMemberCenter;
     return fetch(`${memberCenterBaseUrl}/notifications`, {
         method: 'post',
