@@ -41,9 +41,11 @@ const updateUserUUID = ({ uuid }) => {
     return {type: 'UPDATE_PBPLUS_USER_UUID', payload: { uuid }};
 };
 
-const renewUserUUID = () => {
-    return updateUserUUID({uuid: newUuid()});
-};
+const renewUserUUID = () => { return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        resolve(dispatch(updateUserUUID({uuid: newUuid()})));
+    });
+}; };
 
 const Actions = { updateUserUUID, renewUserUUID };
 
