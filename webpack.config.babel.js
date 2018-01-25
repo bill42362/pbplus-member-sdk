@@ -37,11 +37,5 @@ export default {
             'amd': 'pbplus-member-ui',
             'root': 'pbplus-member-ui',
         },
-        'react-telephone-input/lib/withStyles': {
-            'commonjs': 'react-telephone-input/lib/withStyles',
-            'commonjs2': 'react-telephone-input/lib/withStyles',
-            'amd': 'react-telephone-input/lib/withStyles',
-            'root': 'react-telephone-input/lib/withStyles',
-        },
     }
 };
