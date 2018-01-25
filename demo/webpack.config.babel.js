@@ -39,7 +39,6 @@ export default {
         alias: {
           react: `${__dirname}/node_modules/react`,
           'pbplus-member-ui': `${__dirname}/node_modules/pbplus-member-ui`,
-          'react-telephone-input': `${__dirname}/node_modules/react-telephone-input`,
         },
     },
     devServer: {
