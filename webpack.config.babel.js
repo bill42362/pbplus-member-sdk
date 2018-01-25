@@ -25,6 +25,23 @@ export default {
         },
     },
     externals: {
-        react: 'commonjs react'
+        react: {
+            'commonjs': 'react',
+            'commonjs2': 'react',
+            'amd': 'react',
+            'root': 'React',
+        },
+        'pbplus-member-ui': {
+            'commonjs': 'pbplus-member-ui',
+            'commonjs2': 'pbplus-member-ui',
+            'amd': 'pbplus-member-ui',
+            'root': 'pbplus-member-ui',
+        },
+        'react-telephone-input/lib/withStyles': {
+            'commonjs': 'react-telephone-input/lib/withStyles',
+            'commonjs2': 'react-telephone-input/lib/withStyles',
+            'amd': 'react-telephone-input/lib/withStyles',
+            'root': 'react-telephone-input/lib/withStyles',
+        },
     }
 };
